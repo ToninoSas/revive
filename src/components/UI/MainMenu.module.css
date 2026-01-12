@@ -58,7 +58,7 @@
 .profile_button {
     background-color: transparent !important;
     border: 2px solid #62D2AD !important;
-    border-radius: 50% !important;
+    /* border-radius: 50% !important; */
     padding: 10px !important;
     transition: 0.3s;
     width: auto;
