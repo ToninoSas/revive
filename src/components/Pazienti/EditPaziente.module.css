@@ -169,6 +169,63 @@
     gap: 20px;
 }
 
+.dropdownToggle {
+    width: 100%;
+    text-align: left;
+    padding: 12px;
+    border: 2px solid #eef2f1;
+    background-color: #fafdfc;
+    border-radius: 10px;
+    color: #163172;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdownMenu {
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.dropdownItemCustom {
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dropdownItemCustom:hover {
+    background-color: #f0f9f6;
+}
+
+/* Tag delle patologie selezionate */
+.tagContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.tag {
+    background-color: #e8f4f1;
+    color: #3A6F6D;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid #62D2AD;
+    transition: all 0.2s;
+}
+
+.tag:hover {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
 @media (max-width: 768px) {
     .gridForm { grid-template-columns: 1fr; }
     .fullWidth { grid-column: span 1; }

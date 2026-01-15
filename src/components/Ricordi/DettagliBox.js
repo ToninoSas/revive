@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useContext } from "react";
 import { getServerMgr } from "../../backend_conn/ServerMgr.js";
 import RicordoSingolo from "./RicordoSingolo";
 import styles from "./DettagliBox.module.css"; 
 import GenericButton from "../UI/GenericButton";
+import AuthContext from "../../context/auth-context";
 
 function DettagliBox() {
     const { userID, boxID } = useParams();
@@ -11,6 +12,9 @@ function DettagliBox() {
     const [filtroTitolo, setFiltroTitolo] = useState("");
     const [ricordi, setRicordi] = useState([]);
     const navigate = useNavigate();
+
+    const auth_ctx = useContext(AuthContext);
+    const isPaziente = auth_ctx.tipoAccount === "Paziente";
 
     useEffect(() => {
         const EstraiRicordi = async () => {
@@ -76,13 +80,14 @@ function DettagliBox() {
                         </div>
                     </div>
 
-                    <div className={styles.right_section}>
-                        <GenericButton 
-                            onClick={handleInserisciRicordo}
-                            buttonText="＋ Aggiungi Ricordo"
-                            generic_button
-                        />
-                    </div>
+                    {/* Solo il dottore/caregiver vede questo tasto */}
+            {!isPaziente && (
+                <GenericButton 
+                    onClick={handleInserisciRicordo}
+                    buttonText="＋ Aggiungi Ricordo"
+                    generic_button
+                />
+            )}
                 </div>
             </header>
 

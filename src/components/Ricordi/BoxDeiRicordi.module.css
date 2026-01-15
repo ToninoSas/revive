@@ -97,7 +97,7 @@
 .box_grid {
     display: grid;
     /* Adattiamo la larghezza delle card come richiesto (min 380px) */
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    /* grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); */
     gap: 25px;
     animation: fadeIn 0.5s ease-out;
 }

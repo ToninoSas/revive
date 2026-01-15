@@ -458,18 +458,18 @@ function initServerMgr(cb) {
         }
     }
 
-    serverMgr.addPaziente = async (doct_UID, nome, cognome, city, codiceFiscale, dataNascita, contattoEmail, contattoCellulare, informazioniMediche, cb) => {
+    serverMgr.addPaziente = async (datiPaziente, cb) => {
         let result = await serverMgr.requestFetchData("addPaziente", {
-            doct_UID: doct_UID,
-            nome: nome,
-            cognome: cognome,
-            city: city,
-            codiceFiscale: codiceFiscale,
-            dataNascita: dataNascita,
-            contattoEmail: contattoEmail,
-            contattoCellulare: contattoCellulare,
-            informazioniMediche: informazioniMediche
-            // statistiche: statistiche
+            doct_UID: datiPaziente.doct_UID,
+            nome: datiPaziente.nome,
+            cognome: datiPaziente.cognome,
+            city: datiPaziente.city,
+            codiceFiscale: datiPaziente.codiceFiscale,
+            dataNascita: datiPaziente.dataNascita,
+            contattoEmail: datiPaziente.contattoEmail,
+            contattoCellulare: datiPaziente.contattoCellulare,
+            patologie: datiPaziente.patologie,
+            descrizione: datiPaziente.descrizione
         })
         if(cb) {
             // console.log("getInventory: " + result)
@@ -492,7 +492,7 @@ function initServerMgr(cb) {
         }
     }
 
-    serverMgr.updatePaziente = async (nome, cognome, city, codiceFiscale, dataNascita, contattoEmail, contattoCellulare, informazioniMediche, listaGiochi, ID, cb) => {
+    serverMgr.updatePaziente = async (nome, cognome, city, codiceFiscale, dataNascita, contattoEmail, contattoCellulare, patologie, descrizione, listaGiochi, ID, cb) => {
         let result = await serverMgr.requestFetchData("updatePaziente", {
             nome: nome,
             cognome: cognome,
@@ -501,7 +501,8 @@ function initServerMgr(cb) {
             dataNascita: dataNascita,
             contattoEmail: contattoEmail,
             contattoCellulare: contattoCellulare,
-            informazioniMediche: informazioniMediche,
+            patologie: patologie,
+            descrizione: descrizione,
             listaGiochi: listaGiochi,
             ID: ID
             // statistiche: statistiche
@@ -795,14 +796,15 @@ function initServerMgr(cb) {
         }
     }
 
-    serverMgr.saveGameResults = async (pazienteID, giocoID, rispTotali, rispCorrette, rispSbagliate, dataSvolgimento, cb) => {
+    serverMgr.saveGameResults = async (pazienteID, giocoID, rispTotali, rispCorrette, rispSbagliate, dataSvolgimento, statoEmotivo, cb) => {
         let result = await serverMgr.requestFetchData("saveGameResults", {
             pazienteID: pazienteID,
             giocoID: giocoID,
             rispTotali: rispTotali,
             rispCorrette: rispCorrette,
             rispSbagliate: rispSbagliate,
-            dataSvolgimento: dataSvolgimento
+            dataSvolgimento: dataSvolgimento,
+            statoEmotivo: statoEmotivo
         })
         if(cb) {
             // console.log("getInventory: " + result)

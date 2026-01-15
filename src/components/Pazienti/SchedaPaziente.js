@@ -61,6 +61,8 @@ function SchedaPaziente(props) {
     }
   };
 
+  console.log(props)
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -109,6 +111,17 @@ function SchedaPaziente(props) {
                   <div className={styles.data_row}>
                     <span>Cellulare:</span>{" "}
                     <strong>{props.contattoCellulare || "N/A"}</strong>
+                  </div>
+                </div>
+                <div className={styles.info_group}>
+                  <h3>Inquadramento Clinico</h3>
+                  <div className={styles.data_row}>
+                    <span>Patologie:</span>{" "}
+                    <strong>{props.patologie.map((patologia)=>patologia+ ", ")}</strong>
+                  </div>
+                  <div className={styles.data_row}>
+                    <span>Descrizione clinica:</span>{" "}
+                    <strong>{props.descrizione}</strong>
                   </div>
                 </div>
                 <div className={styles.info_group_full}>
@@ -204,10 +217,10 @@ function SchedaPaziente(props) {
           </div>
           <div className={styles.creds_details}>
             <p>
-              <strong>Email:</strong> {credentials[0]?.email}
+              <strong>Email:</strong> {props.credentialsAccount.email}
             </p>
             <p>
-              <strong>Password:</strong> {credentials[0]?.password}
+              <strong>Password:</strong> {props.credentialsAccount.password}
             </p>
           </div>
         </Modal.Body>

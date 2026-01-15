@@ -180,10 +180,10 @@ export function GameContextProvider(props) {
         let result = await getServerMgr().patientsListForSingleGame(gameID);
         setPatientsListForSingleGame(result || []);
     }
-    async function salvaRisultati(pazienteID, giocoID, risposteTotali, risposteCorrette, risposteSbagliate) {
+    async function salvaRisultati(pazienteID, giocoID, risposteTotali, risposteCorrette, risposteSbagliate, statoEmotivo) {
         var today = new Date();
         let dateString = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
-        await getServerMgr().saveGameResults(pazienteID, giocoID, risposteTotali, risposteCorrette, risposteSbagliate, dateString);
+        await getServerMgr().saveGameResults(pazienteID, giocoID, risposteTotali, risposteCorrette, risposteSbagliate, dateString, statoEmotivo);
     }
 
     return (

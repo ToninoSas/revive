@@ -37,15 +37,28 @@ function BoxRicordo({ nome, cognome, citta, eta, onView, onEdit, onDelete, isDoc
 
                 {isDoctor && (
                     <div className={styles.admin_tools}>
-                        <button className={styles.icon_btn_edit} onClick={onEdit} title="Modifica">
-                            📝
+                        <button className={styles.btn_edit} onClick={onEdit} title="Modifica">
+                             📝Modifica
                         </button>
-                        <button className={styles.icon_btn_delete} onClick={onDelete} title="Elimina">
-                            🗑️
+                        <button className={styles.btn_delete} onClick={onDelete} title="Elimina">
+                            🗑️ <span className={styles.custom_label}>Elimina</span>
                         </button>
                     </div>
                 )}
             </div>
+
+            {/* <div className={styles.card_actions}>
+                {isDoctor && (
+                    <div className={styles.admin_tools}>
+                        <button className={styles.btn_edit} onClick={onEdit} title="Modifica">
+                            📝 Modifica
+                        </button>
+                        <button className={styles.btn_delete} onClick={onDelete} title="Elimina">
+                            🗑️ Elimina
+                        </button>
+                    </div>
+                )}
+            </div> */}
         </div>
     );
 }

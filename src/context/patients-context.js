@@ -146,6 +146,8 @@ console.log("stampo tutti i dati del paziente",pazienteee);
                 attivitààà={pazienteee.attività}
                 cfff={pazienteee.codiceFiscale}
                 giochiii={resultGiochi}
+                patologie = {JSON.parse(pazienteee.patologie)}
+                descrizione = {pazienteee.descrizione}
             >
             </EditPaziente>
 
@@ -317,6 +319,9 @@ console.log("stampo tutti i dati del paziente",pazienteee);
                
                 contattoEmail = {pazientee.contattoEmail}
                 contattoCellulare = {pazientee.contattoCellulare}
+
+                patologie = {JSON.parse(pazientee.patologie)}
+                descrizione = {pazientee.descrizione}
                
                 listaGiochi = {resultGiochi}
                 statsPaziente = {resultStatistiche}

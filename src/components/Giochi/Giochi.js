@@ -15,8 +15,9 @@ import AuthContext from "../../context/auth-context";
 import AssignGameToPatient from "./AssignGameToPatient";
 import ExercisePairGame from "./ExercisePairGame";
 import SearchBox from "../UI/SearchBox";
+import RatingEmotivo from "../Giochi/RatingEmotivo"; // Importazione corretta
 
-// Variabili di supporto esterne (mantenute come da originale)
+// Variabili di supporto esterne
 let modifica_gioco;
 let modifica_domanda;
 let assegnazione_gioco;
@@ -42,6 +43,11 @@ function Giochi() {
   const [showEditQuestion, setShowEditQuestion] = useState(false);
   const [showAssignGameTo, setShowAssignGameTo] = useState(false);
   const [showGameResults, setShowGameResults] = useState(false);
+  
+  // STATI PER IL FEEDBACK EMOTIVO
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [tempResults, setTempResults] = useState(null);
+
   const [gameObject, setGameObject] = useState(null);
   const [gameActiveIndex, setGameActiveIndex] = useState(-1);
 
@@ -86,19 +92,13 @@ function Giochi() {
     setShowEditGame(false);
   }
 
-  function startGame(
-    stringa_TIPOGIOCO,
-    stringa_CODICEGIOCO,
-    stringa_LIVELLOGIOCO
-  ) {
+  function startGame(stringa_TIPOGIOCO, stringa_CODICEGIOCO, stringa_LIVELLOGIOCO) {
     TIPOGIOCO = stringa_TIPOGIOCO;
     CODICEGIOCO = stringa_CODICEGIOCO;
     LIVELLOGIOCO = stringa_LIVELLOGIOCO;
 
     let coppie;
-    let indice = game_ctx.listaGiochi.findIndex(
-      (g) => g.gameID === stringa_CODICEGIOCO
-    );
+    let indice = game_ctx.listaGiochi.findIndex((g) => g.gameID === stringa_CODICEGIOCO);
 
     if (indice !== -1) {
       giocoSvoltoID = game_ctx.listaGiochi[indice].gameID;
@@ -122,6 +122,13 @@ function Giochi() {
       domandeGioco: domandeDelGioco,
     };
 
+    if(DOMANDEGIOCO.length === 0){
+      console.log("gioco vuoto senza domande");
+      setGameObject(null);
+      alert("Questo gioco non presenta ancora domande!");
+      return;
+    }
+
     switch (stringa_TIPOGIOCO) {
       case "QUIZ":
       case "QUIZ CON SUONI":
@@ -133,9 +140,7 @@ function Giochi() {
         setGameObject(<GuessTheWord {...commonProps} />);
         break;
       case "GIOCO DELLE COPPIE":
-        setGameObject(
-          <ExercisePairGame {...commonProps} numeroCoppie={coppie} />
-        );
+        setGameObject(<ExercisePairGame {...commonProps} numeroCoppie={coppie} />);
         break;
       default:
         setGameObject(null);
@@ -148,9 +153,21 @@ function Giochi() {
     setShowGameResults(false);
   }
 
+  // --- MODIFICA DI ENDGAME ---
   function endGame(risposteUtente, domandeTotali) {
     setGameObject(null);
+    // 1. Memorizziamo i dati del punteggio
+    setTempResults({ risposteUtente, domandeTotali });
+    // 2. Attiviamo la UI del feedback (RatingEmotivo)
+    setShowFeedback(true);
+  }
+
+  // --- NUOVA FUNZIONE DI GESTIONE FEEDBACK ---
+  const handleFeedbackSelection = (valoreEmotivo) => {
+    const { risposteUtente, domandeTotali } = tempResults;
+
     if (auth_ctx.tipoAccount !== "Paziente") {
+      // LOGICA CAREGIVER: Prepariamo la scheda risultati con l'assegnazione
       risultati_utente_gioco = (
         <RisultatiGioco
           numeroRisposteCorrette={risposteUtente}
@@ -162,19 +179,22 @@ function Giochi() {
               giocoSvoltoID,
               domandeTotali,
               risposteUtente,
-              domandeTotali - risposteUtente
+              domandeTotali - risposteUtente,
+              valoreEmotivo // Passiamo il feedback scelto
             );
             closeGameResults();
           }}
         />
       );
     } else {
+      // LOGICA PAZIENTE: Salvataggio automatico con feedback
       game_ctx.salvaRisultatiGiocoPaziente(
         auth_ctx.utenteLoggatoUID,
         giocoSvoltoID,
         domandeTotali,
         risposteUtente,
-        domandeTotali - risposteUtente
+        domandeTotali - risposteUtente,
+        valoreEmotivo
       );
       risultati_utente_gioco = (
         <RisultatiGiocoPazAccnt
@@ -183,13 +203,16 @@ function Giochi() {
         />
       );
     }
-    setShowGameResults(true);
-  }
+
+    setShowFeedback(false); // Chiude la selezione emoji
+    setShowGameResults(true); // Mostra la scheda dei risultati
+  };
 
   function closeGameResults() {
     risultati_utente_gioco = null;
     setGameObject(null);
     setShowGameResults(false);
+    setShowFeedback(false);
     setShowSearchBoxAndButton(true);
     setShowElencoGiochi(true);
     INDICEGIOCO_VAR = -1;
@@ -236,16 +259,17 @@ function Giochi() {
   return (
     <div className={styles.main_wrapper}>
       {game_ctx.showModale && game_ctx.modale}
+
+      {/* FEEDBACK EMOTIVO: Renderizzato condizionalmente qui */}
+      {showFeedback && <RatingEmotivo onSelect={handleFeedbackSelection} />}
+
       {showSearchBoxAndButton && auth_ctx.tipoAccount !== "Paziente" && (
         <header className={styles.toolbar}>
           <div className={styles.toolbar_content}>
             {gameActiveIndex === -1 ? (
               <>
                 <div className={styles.filter_box}>
-                  <select
-                    className={styles.select_style}
-                    onChange={tipoGiocoChangeHandler}
-                  >
+                  <select className={styles.select_style} onChange={tipoGiocoChangeHandler}>
                     <option value="TUTTI">Tutti i tipi</option>
                     <option>QUIZ</option>
                     <option>QUIZ CON IMMAGINI</option>
@@ -254,7 +278,6 @@ function Giochi() {
                     <option>COMPLETA LA PAROLA</option>
                   </select>
                 </div>
-
                 <GenericButton
                   onClick={() => {
                     formCreateNewGame();
@@ -263,11 +286,8 @@ function Giochi() {
                   generic_button={true}
                   buttonText={" + Crea Gioco"}
                 />
-
                 <div className={styles.search_wrapper}>
-                  <SearchBox
-                    onChange={(e) => game_ctx.cercaGioco(e.target.value)}
-                  />
+                  <SearchBox onChange={(e) => game_ctx.cercaGioco(e.target.value)} />
                 </div>
               </>
             ) : (
@@ -284,13 +304,13 @@ function Giochi() {
 
       <main className={styles.content_container}>
         {showElencoGiochi && (
-          <h1 className={styles.page_title}>Libreria Giochi</h1>
+          <h1 className={styles.page_title}>
+             {auth_ctx.tipoAccount === "Paziente" ? "I Miei Esercizi" : "Libreria Giochi"}
+          </h1>
         )}
 
         <div className={styles.dynamic_content}>
-          {showAddNewGame && (
-            <AddGioco chiudiFormNuovoGioco={closeFormCreateNewGame} />
-          )}
+          {showAddNewGame && <AddGioco chiudiFormNuovoGioco={closeFormCreateNewGame} />}
           {showEditGame && modifica_gioco}
           {showAddNewQuestion && (
             <AddDomanda

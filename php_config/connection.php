@@ -1242,14 +1242,16 @@ function updatePatientWithProfileID($i_conn) {
         $city = $dataJson["city"];
         $codiceFiscale = $dataJson["codiceFiscale"];
         $dataNascita = $dataJson["dataNascita"];
-        $informazioniMediche = $dataJson["informazioniMediche"];
-        
+        $contattoEmail = $dataJson["contattoEmail"];
+        $contattoCellulare = $dataJson["contattoCellulare"];
+        $patologieJson = json_encode($dataJson["patologie"]);
+        $descrizione = $dataJson["descrizione"];
         
         $insertNewPatient = $i_conn->prepare(
-            "INSERT INTO `patients` (`doct_UID`, `nome`, `cognome`, `city`, `codiceFiscale`, `dataNascita`) 
-            VALUES (?, ?, ?, ?, ?, ?)"
+            "INSERT INTO `patients` (`doct_UID`, `nome`, `cognome`, `city`, `codiceFiscale`, `dataNascita`, `contattoCellulare`, `contattoEmail`,`patologie`,`descrizione`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
-        $insertNewPatient->bind_param("isssss", $doct_UID, $nome, $cognome, $city, $codiceFiscale, $dataNascita);
+        $insertNewPatient->bind_param("isssssssss", $doct_UID, $nome, $cognome, $city, $codiceFiscale, $dataNascita, $contattoCellulare, $contattoEmail, $patologieJson, $descrizione);
         
        
         if ($insertNewPatient->execute()) {
@@ -1269,13 +1271,13 @@ function updatePatientWithProfileID($i_conn) {
         $data = file_get_contents("php://input");
         $dataJson = json_decode($data, true);
         
-       
         $nome = $dataJson["nome"];
         $cognome = $dataJson["cognome"];
         $city = $dataJson["city"];
         $codiceFiscale = $dataJson["codiceFiscale"];
         $dataNascita = $dataJson["dataNascita"];
-        $informazioniMediche = $dataJson["informazioniMediche"];
+        $patologieJson = json_encode($dataJson["patologie"]);
+        $descrizione = $dataJson["descrizione"];
         $listaGiochi = $dataJson["listaGiochi"];
         error_log("Lista Giochi ricevuta: " . print_r($dataJson["listaGiochi"], true));
 
@@ -1292,10 +1294,12 @@ function updatePatientWithProfileID($i_conn) {
                 `codiceFiscale` = ?, 
                 `dataNascita` = ?, 
                 `contattoCellulare` = ?, 
-                `contattoEmail` = ? 
+                `contattoEmail` = ? ,
+                `patologie` = ? ,
+                `descrizione` = ?
             WHERE `patients`.`ID` = ?"
         );
-        $updatePatient->bind_param("sssssssi", $nome, $cognome, $city, $codiceFiscale, $dataNascita, $contattoCellulare, $contattoEmail, $ID);  // Aggiunto contattoEmail
+        $updatePatient->bind_param("sssssssssi", $nome, $cognome, $city, $codiceFiscale, $dataNascita, $contattoCellulare, $contattoEmail, $patologieJson, $descrizione,  $ID);  // Aggiunto contattoEmail
         $updatePatient->execute();
     
         
@@ -1683,7 +1687,13 @@ JOIN games ON bridgeGamesPatients.game_ID = games.gameID
 JOIN patients ON bridgeGamesPatients.patient_ID = patients.ID 
 LEFT JOIN bridgetoquestionsgames ON games.gameID = bridgetoquestionsgames.IDgame
 WHERE patients.ID = ?
+    ;
 "
+// "SELECT games.gameID, games.creatorID, games.nomeGioco, games.tipoGioco, 
+//        games.livelloGioco, games.categoriaGioco, games.numero
+// FROM bridgegamespatients 
+// JOIN games ON bridgegamespatients.game_ID = games.gameID 
+// WHERE bridgegamespatients.patient_ID = ?"
         );
         $listGamesPatient->bind_param("i", $patientID);
         $listGamesPatient->execute();
@@ -1945,13 +1955,14 @@ WHERE patients.ID = ?
         $rispCorrette = $dataJson["rispCorrette"];
         $rispSbagliate = $dataJson["rispSbagliate"];
         $dataSvolgimento = $dataJson["dataSvolgimento"];
+        $statoEmotivo = $dataJson["statoEmotivo"];
         
        
         $insertGameResultQuery = $i_conn->prepare(
-            "INSERT INTO `resultsGames` (`pazienteID`, `giocoID`, `rispTotali`, `rispCorrette`, `rispSbagliate`, `dataSvolgimento`)
-            VALUES (?, ?, ?, ?, ?, ?)"
+            "INSERT INTO `resultsGames` (`pazienteID`, `giocoID`, `rispTotali`, `rispCorrette`, `rispSbagliate`, `dataSvolgimento`, `statoEmotivo`)
+            VALUES (?, ?, ?, ?, ?, ?, ?)"
         );
-        $insertGameResultQuery->bind_param("iiiiis", $pazienteID, $giocoID, $rispTotali, $rispCorrette, $rispSbagliate, $dataSvolgimento);
+        $insertGameResultQuery->bind_param("iiiiisi", $pazienteID, $giocoID, $rispTotali, $rispCorrette, $rispSbagliate, $dataSvolgimento, $statoEmotivo);
     
         $insertGameResultQuery->execute();
     

@@ -18,9 +18,9 @@ import VisualizzaRicordo from "./components/Ricordi/VisualizzaRicordo";
 import DettaglioRicordo from "./components/Ricordi/DettaglioRicordo";
 import ModificaRicordo from "./components/Ricordi/ModificaRicordo";
 
-function RoutingNew(){
-    
-    return(
+function RoutingNew() {
+
+    return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login></Login>}></Route>
@@ -36,8 +36,8 @@ function RoutingNew(){
                     </>
                 }>
                 </Route>
-                
-               
+
+
                 <Route path="/giochi/:userID" element={
                     <>
                         <MainMenu
@@ -59,9 +59,9 @@ function RoutingNew(){
                         </div>
                     </>
                 }>
-                    </Route>
-                    
-                  
+                </Route>
+
+
                 <Route path="/box-dei-ricordi/:userID" element={
                     <>
                         <MainMenu selected={"BOX DEI RICORDI"} />
@@ -71,64 +71,64 @@ function RoutingNew(){
                     </>
                 }>
                 </Route>
-                
-<Route path="/box-dei-ricordi/dettagliBox/:userID/:boxID" element={
-    <>
-        <MainMenu selected={"BOX DEI RICORDI"} />
-        <div className="wrap_schermata">
-            <DettagliBox /> 
-        </div>
-    </>
-} />
-<Route  path="/box-dei-ricordi/dettagliBox/dettagli-ricordo/:userID/:boxID/:IdRicordo" 
+
+                <Route path="/box-dei-ricordi/dettagliBox/:userID/:boxID" element={
+                    <>
+                        <MainMenu selected={"BOX DEI RICORDI"} />
+                        <div className="wrap_schermata">
+                            <DettagliBox />
+                        </div>
+                    </>
+                } />
+                <Route path="/box-dei-ricordi/dettagliBox/dettagli-ricordo/:userID/:boxID/:IdRicordo"
                     element={
                         <>
                             <MainMenu selected={"BOX DEI RICORDI"} />
                             <div className="wrap_schermata">
-                                <DettaglioRicordo /> 
+                                <DettaglioRicordo />
                             </div>
                         </>
-                    }  />
+                    } />
 
 
-<Route  path="/box-dei-ricordi/dettagliBox/dettagli-ricordo/inserisci-ricordo/:boxID" 
+                <Route path="/box-dei-ricordi/dettagliBox/dettagli-ricordo/inserisci-ricordo/:boxID"
                     element={
                         <>
                             <MainMenu selected={"BOX DEI RICORDI"} />
                             <div className="wrap_schermata">
-                                <InserisciRicordo /> 
+                                <InserisciRicordo />
                             </div>
                         </>
-                    }  />
+                    } />
 
 
-<Route 
-    path="/box-dei-ricordi/dettagliBox/dettagli-ricordo/RicordoSingolo/visualizza-ricordo/:idRicordo" 
-    element={
-        <>
-            <MainMenu selected={"BOX DEI RICORDI"} />
-            <div className="wrap_schermata">
-                <VisualizzaRicordo/>  
-            </div>
-        </>
-    }
-/>
-<Route 
-    path="/box-dei-ricordi/dettagliBox/dettagli-ricordo/RicordoSingolo/modifica-ricordo/:idRicordo" 
-    element={
-        <>
-            <MainMenu selected={"BOX DEI RICORDI"} />
-            <div className="wrap_schermata">
-                <ModificaRicordo/> 
-            </div>
-        </>
-    }
-/>
+                <Route
+                    path="/box-dei-ricordi/dettagliBox/dettagli-ricordo/RicordoSingolo/visualizza-ricordo/:idRicordo"
+                    element={
+                        <>
+                            <MainMenu selected={"BOX DEI RICORDI"} />
+                            <div className="wrap_schermata">
+                                <VisualizzaRicordo />
+                            </div>
+                        </>
+                    }
+                />
+                <Route
+                    path="/box-dei-ricordi/dettagliBox/dettagli-ricordo/RicordoSingolo/modifica-ricordo/:idRicordo"
+                    element={
+                        <>
+                            <MainMenu selected={"BOX DEI RICORDI"} />
+                            <div className="wrap_schermata">
+                                <ModificaRicordo />
+                            </div>
+                        </>
+                    }
+                />
 
 
 
 
-              
+
                 <Route path="/box-dei-ricordi/crea-box/:userID" element={
                     <>
                         <MainMenu selected={"BOX DEI RICORDI"} />
@@ -138,18 +138,18 @@ function RoutingNew(){
                     </>
                 }>
                 </Route>
-                
+
 
 
                 <Route path="/box-dei-ricordi/modifica/:userID/:boxID" element={
-                  <>
-                 <MainMenu selected={"BOX DEI RICORDI"} />
-                 <div className="wrap_schermata">
-                 <ModificaBox />
-                  </div>
-                            </>
-                              }>
-                     </Route>
+                    <>
+                        <MainMenu selected={"BOX DEI RICORDI"} />
+                        <div className="wrap_schermata">
+                            <ModificaBox />
+                        </div>
+                    </>
+                }>
+                </Route>
 
 
                 <Route path="/domande/creaDomanda/:userID" element={

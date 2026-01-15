@@ -27,7 +27,7 @@
 }
 
 .alternative_button:disabled{
-    background-color: rgb(0, 0, 60);
+    background-color: gray;
     border: 2px solid transparent;
     cursor: not-allowed;
     /* pointer-events: none; */

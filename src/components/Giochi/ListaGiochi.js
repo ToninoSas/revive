@@ -1,10 +1,14 @@
 import styles from "./ListaGiochi.module.css";
 import { useContext } from "react";
 import GameContext from "../../context/game-context";
+import AuthContext from "../../context/auth-context";
 import GenericButton from "../UI/GenericButton";
 
 function ListaGiochi(props) {
   const game_ctx = useContext(GameContext);
+  const auth_ctx = useContext(AuthContext);
+
+  const isPaziente = auth_ctx.tipoAccount === "Paziente";
 
   // Filtriamo i giochi in base al tipo selezionato nella barra superiore
   const filteredGames =
@@ -62,29 +66,33 @@ function ListaGiochi(props) {
               generic_button={true}
               buttonText={"Gioca"}
             />
-            <div className={styles.admin_buttons}>
-              <button
-                className={styles.icon_btn_edit}
-                onClick={() => props.mostraFormModificaGioco(gioco)}
-                title="Modifica Gioco"
-              >
-                📝
-              </button>
-              <button
-                className={styles.icon_btn_assign}
-                onClick={() => props.mostraSchedaAssegnazione(gioco.gameID)}
-                title="Assegna a Paziente"
-              >
-                👤
-              </button>
-              <button
-                className={styles.icon_btn_delete}
-                onClick={() => game_ctx.eliminaGioco(gioco.gameID)}
-                title="Elimina"
-              >
-                🗑️
-              </button>
-            </div>
+            {!isPaziente && (
+              <div className={styles.admin_buttons}>
+                <button
+                  className={styles.icon_btn_edit}
+                  onClick={() => props.mostraFormModificaGioco(gioco)}
+                  title="Modifica Gioco"
+                >
+                  <span style={{fontSize: 15}}>Modifica 📝</span>
+                </button>
+                <button
+                  className={styles.icon_btn_assign}
+                  onClick={() => props.mostraSchedaAssegnazione(gioco.gameID)}
+                  title="Assegna a Paziente"
+                >
+                  
+                  <span style={{fontSize: 15}}>Assegna +👤</span>
+                </button>
+                <button
+                  className={styles.icon_btn_delete}
+                  onClick={() => game_ctx.eliminaGioco(gioco.gameID)}
+                  title="Elimina"
+                >
+                  
+                  <span style={{fontSize: 15, color: "red"}}>Elimina 🗑️</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ))}

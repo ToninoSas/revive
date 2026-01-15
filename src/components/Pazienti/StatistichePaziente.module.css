@@ -131,3 +131,91 @@
     .kpi_grid { grid-template-columns: 1fr; }
     .filter_header { flex-direction: column; text-align: center; }
 }
+
+main_stats_layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Card riassuntiva del Mood */
+.mood_summary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: #f8fbfa;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    border: 1px solid #eef2f1;
+}
+
+.mood_big_icon {
+    font-size: 3.8rem;
+    line-height: 1;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
+}
+
+.mood_text_info h4 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #163172;
+}
+
+.mood_text_info p {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    color: #5a827f;
+    line-height: 1.4;
+}
+
+/* Sistema della barra graduata (Mood Range) */
+.mood_range {
+    position: relative;
+    padding-top: 25px;
+    margin: 10px 10px 0 10px;
+}
+
+.range_bar {
+    height: 10px;
+    /* Gradiente clinico: Rosso (Critico) -> Giallo -> Verde (Ottimale) */
+    background: linear-gradient(to right, #dc3545, #ffc107, #28a745);
+    border-radius: 20px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.mood_pointer {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #163172;
+    font-weight: bold;
+    /* Transizione fluida quando cambia il filtro temporale */
+    transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.range_labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #3A6F6D;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Adattamento per Tablet e Smartphone */
+@media (max-width: 900px) {
+    .main_stats_layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .mood_summary {
+        flex-direction: column;
+        text-align: center;
+    }
+}
