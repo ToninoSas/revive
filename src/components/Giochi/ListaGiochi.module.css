@@ -30,7 +30,7 @@
 }
 
 .game_type_badge {
-    font-size: 11px;
+    font-size: 16px;
     font-weight: 700;
     color: #1e56a0;
     text-transform: uppercase;
@@ -43,7 +43,7 @@
 
 .game_title {
     margin: 0;
-    font-size: 20px;
+    font-size: 26px;
     color: #163172;
 }
 
@@ -58,7 +58,7 @@
 .info_row {
     display: flex;
     justify-content: space-between;
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
 }
 

@@ -20,6 +20,12 @@ function LoginForm(props) {
 
     const navigate = useNavigate();
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     useEffect(() => {
         if (sessionStorage.getItem('UID') !== null) {
             auth_ctx.mantieniUtenteLoggato();
@@ -73,7 +79,7 @@ function LoginForm(props) {
                     email, user.UID, user.titolo, user.nome, user.cognome, user.patientID
                 );
 
-               
+
 
                 if (user.titolo === 2) {
                     navigate(`/giochi/${user.UID}`);
@@ -94,39 +100,50 @@ function LoginForm(props) {
                 <form className={styles.center_elements} onSubmit={submitLogin}>
                     <img className={styles.img_size} src={logo} alt="Logo" />
                     <h1 className={styles.title}>Login</h1>
-    
+
                     <label className={`${styles.label_box} ${!validEmail ? styles.invalid : ''}`}>Email</label>
-                    <input 
-                        className={`${styles.input_box} ${!validEmail ? styles.invalid : ''}`} 
-                        type="email" 
-                        placeholder="Inserisci email" 
-                        value={email} 
-                        onChange={emailChangeHandler} 
+                    <input
+                        className={`${styles.input_box} ${!validEmail ? styles.invalid : ''}`}
+                        type="email"
+                        placeholder="Inserisci email"
+                        value={email}
+                        onChange={emailChangeHandler}
                     />
-    
-                    <label className={`${styles.label_box} ${!validPassword ? styles.invalid : ''}`}>Password</label>
-                    <input 
-                        className={`${styles.input_box} ${!validPassword ? styles.invalid : ''}`} 
-                        type="password" 
-                        placeholder="Inserisci password" 
-                        value={password} 
-                        onChange={passwordChangeHandler} 
-                    />
-    
+
+                    <div style={{ position: 'relative' }}>
+                        <label className={`${styles.label_box} ${!validPassword ? styles.invalid : ''}`}>Password</label>
+                        <input
+                            className={`${styles.input_box} ${!validPassword ? styles.invalid : ''}`}
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Inserisci password"
+                            value={password}
+                            onChange={passwordChangeHandler}
+
+                        />
+
+                        <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className={styles.toggle_button}
+                        >
+                            {showPassword ? '🙈' : '👁️'}
+                        </button>
+                    </div>
+
                     {erroreLogin && <h2 className={styles.error_message}>Credenziali non corrette</h2>}
-    
+
                     <GenericButton
                         type="submit"
                         generic_button={true}
                         buttonText='Accedi'
                     />
-    
+
                     <h5 className={styles.log_reg} onClick={goToRegistrationForm}>Clicca qui per registrarti!</h5>
                     <h5 className={styles.psw_dimenticata} onClick={goToRecoverPassword}>Password dimenticata?</h5>
                 </form>
             </Card>
         </div>
     );
-}    
+}
 
 export default LoginForm;
